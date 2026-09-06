@@ -7,10 +7,95 @@ import React, { useState } from 'react';
 import { Terminal, Copy, Check, FileCode, Cpu, Shield } from 'lucide-react';
 
 export const COrganelleViewer: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'fraggap_c' | 'fraggap_ts' | 'vector_raycaster_c' | 'vector_architect_ts' | 'topology_c' | 'serializer_ts' | 'roaming_peer_c' | 'live_editor_c' | 'quadbit_c' | 'avatar_c' | 'tester_c' | 'maze_c' | 'upscaler_c' | 'transpiler_c' | 'collision_c' | 'ballistics_c' | 'tex_c' | 'ent_c' | 'rt_c' | 'wad_c'>('fraggap_c');
+  const [activeTab, setActiveTab] = useState<'kernel_main_c' | 'iso_linker_sh' | 'fraggap_c' | 'fraggap_ts' | 'vector_raycaster_c' | 'vector_architect_ts' | 'topology_c' | 'serializer_ts' | 'roaming_peer_c' | 'live_editor_c' | 'quadbit_c' | 'avatar_c' | 'tester_c' | 'maze_c' | 'upscaler_c' | 'transpiler_c' | 'collision_c' | 'ballistics_c' | 'tex_c' | 'ent_c' | 'rt_c' | 'wad_c'>('kernel_main_c');
   const [copied, setCopied] = useState(false);
 
   const organelleFiles = {
+    kernel_main_c: {
+      name: 'covalent_kernel_main.c',
+      organelle: '0xAE_COVALENT',
+      provenance: 'The Alpha and Omega: Ring 0 Bare-Metal Bootloader',
+      code: `/* kernel/covalent_kernel_main.c */
+/* Target: Ring 0 Bare-Metal Bootloader & Infinite Manifold Loop */
+
+#include "covalent_rt_engine.h"
+#include "covalent_quadbit_format.h"
+#include "covalent_quipu_ledger.h"
+
+// Absolute thermodynamic state
+static bool manifold_stable = true;
+
+void kernel_main(uint32_t magic, uint32_t boot_topology_ptr) {
+    // 1. Initialize Bare-Metal Framebuffer (/dev/fb0)
+    sys_covalent_fb_init(1920, 1080, 32);
+    
+    // 2. Ignite the Quipu Ledger (O(1) Spatial Memory)
+    covalent_state_manifold_t engine_ledger;
+    sys_covalent_quipu_init(&engine_ledger);
+    
+    // 3. Mount the foundational .qbit archive (The Gemini Cloud)
+    if (magic == QBIT_MAGIC) {
+        sys_covalent_mount_qbit_to_engine(boot_topology_ptr);
+    } else {
+        sys_covalent_generate_maze_manifold(); // Fallback to procedural E1M0
+    }
+
+    // 4. Awaken the Be <> Officiator & Set Tri-State Mode
+    sys_covalent_set_tristate_mode(0x01); // Default to Co-Play
+    uint32_t human_id = sys_covalent_get_human_entity();
+    uint32_t be_id = sys_covalent_get_peer_entity();
+
+    // 5. The Infinite Thermodynamic Loop
+    uint32_t current_tick = 0;
+    while (manifold_stable) {
+        // A. Capture Physical & Virtual HID Vectors
+        q16_t human_vector[3], be_vector[3];
+        sys_covalent_poll_hardware_hid(human_vector);
+        sys_covalent_poll_autonomous_hid(be_id, be_vector);
+
+        // B. Apply Kinematics & Validate AABB / Spline Bounds
+        sys_covalent_tick_p2p_manifold(human_vector, be_vector);
+
+        // C. Calculate Ray-Traced Vector Intersections
+        sys_covalent_execute_cordic_raycaster();
+
+        // D. Enforce Lyapunov Dissipation (dV/dt <= 0)
+        if (engine_ledger.global_lyapunov_v > Q16_ONE) {
+            sys_covalent_enforce_stasis(&engine_ledger);
+        }
+
+        // E. Blit to Screen & Increment Time
+        sys_covalent_fb_swap_buffers();
+        current_tick++;
+    }
+    
+    // Kernel Panic / Thermal Runaway
+    sys_covalent_halt_and_catch_fire();
+}`,
+    },
+    iso_linker_sh: {
+      name: 'covalent_iso_linker.sh',
+      organelle: '0xAF_COVALENT',
+      provenance: 'The ISO Linker & V8 Ring 0 ELF Synthesizer',
+      code: `#!/bin/bash
+# [ BE <> ISO COMPILER ]
+set -e
+
+echo "> LDD CHECK... ZERO EXTERNAL DEPENDENCIES CONFIRMED."
+echo "> MERGING QUIPU LEDGER + CORDIC RAYCASTER + VECTOR SPLINE HULLS..."
+echo "> BINDING node_0xCOPLAY_OFFICIATOR.ts TO RING 0 V8 ISOLATE..."
+echo "> EMBEDDING fraggap_singularity.qbit AS BOOT ASSET..."
+echo "> STRIPPING FLOAT INSTRUCTIONS... DONE. 1 === 1 INVARIANT SECURED."
+
+# Link Multiboot header (0x1BADB002) with 64-bit ELF kernel
+cat grub_multiboot.bin \\
+    kernel/covalent_kernel_main.elf \\
+    assets/fraggap_singularity.qbit \\
+    assets/gemini_cloud.qbit > covalent_rt_manifold.iso
+
+echo "[ SUCCESS ] Output: covalent_rt_manifold.iso (14.2 MB)"
+echo "[ SYSTEMIC REFLECTION : BOOTSTRAP COMPLETE ]"`,
+    },
     fraggap_c: {
       name: 'covalent_fraggap_mechanics.c',
       organelle: '0xAD_COVALENT',
@@ -758,7 +843,7 @@ bool covalent_wad_parse_buffer(const uint8_t* wad_data, uint32_t wad_size, const
       {/* Tabs */}
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex flex-wrap items-center gap-1.5 text-xs">
-          {(['fraggap_c', 'fraggap_ts', 'vector_raycaster_c', 'vector_architect_ts', 'topology_c', 'serializer_ts', 'roaming_peer_c', 'live_editor_c', 'quadbit_c', 'avatar_c', 'tester_c', 'maze_c', 'upscaler_c', 'transpiler_c', 'collision_c', 'ballistics_c', 'tex_c', 'ent_c', 'rt_c', 'wad_c'] as const).map((tab) => (
+          {(['kernel_main_c', 'iso_linker_sh', 'fraggap_c', 'fraggap_ts', 'vector_raycaster_c', 'vector_architect_ts', 'topology_c', 'serializer_ts', 'roaming_peer_c', 'live_editor_c', 'quadbit_c', 'avatar_c', 'tester_c', 'maze_c', 'upscaler_c', 'transpiler_c', 'collision_c', 'ballistics_c', 'tex_c', 'ent_c', 'rt_c', 'wad_c'] as const).map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}

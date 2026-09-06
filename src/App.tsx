@@ -10,7 +10,7 @@ import { CoplayOfficiator } from './organelles/node_0x96_coplay_officiator';
 import { DoomCanvas } from './components/DoomCanvas';
 import { LyapunovMonitor } from './components/LyapunovMonitor';
 import { QuipuLedgerView } from './components/QuipuLedgerView';
-import { TomHandshake } from './components/TomHandshake';
+import { HeaderSignalReceptor, HeaderSovereignStatusBadge } from './components/HeaderSignalReceptor';
 import { COrganelleViewer } from './components/COrganelleViewer';
 import { GenerativeUpscalerPanel } from './components/GenerativeUpscalerPanel';
 import { TopologicalMazePanel } from './components/TopologicalMazePanel';
@@ -18,6 +18,7 @@ import { SemanticArchitectPanel } from './components/SemanticArchitectPanel';
 import { AssetStudioPanel } from './components/AssetStudioPanel';
 import { TriShardWysiwygStudio } from './components/TriShardWysiwygStudio';
 import { VectorArchitectPanel } from './components/VectorArchitectPanel';
+import { KernelBootIsoPanel } from './components/KernelBootIsoPanel';
 import {
   Flame,
   Shield,
@@ -37,6 +38,7 @@ import {
   Bot,
   Sliders,
   Maximize2,
+  HardDrive,
 } from 'lucide-react';
 
 export type PlatformMode = 'GAME' | 'STUDIO' | 'DATA';
@@ -46,7 +48,7 @@ export default function App() {
   const [currentMode, setCurrentMode] = useState<PlatformMode>('STUDIO');
 
   // Studio Sub-tab for clean organization
-  const [studioTab, setStudioTab] = useState<'WYSIWYG' | 'VECTOR_ARCHITECT' | 'LEVEL_GEN' | 'ASSET_GEN' | 'UPSCALER' | 'TOPOLOGICAL'>('VECTOR_ARCHITECT');
+  const [studioTab, setStudioTab] = useState<'WYSIWYG' | 'VECTOR_ARCHITECT' | 'KERNEL_ISO' | 'LEVEL_GEN' | 'ASSET_GEN' | 'UPSCALER' | 'TOPOLOGICAL'>('KERNEL_ISO');
 
   // Initialize "The Gemini Cloud" Datacenter Manifold
   const initialMap = useMemo(() => buildGeminiCloudDatacenter(), []);
@@ -93,87 +95,98 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-stone-950 text-stone-200 flex flex-col selection:bg-cyan-500 selection:text-black">
-      {/* Top Navigation & Mode Switcher Bar */}
-      <header className="border-b border-stone-800 bg-stone-900/95 backdrop-blur-md px-4 py-2.5 sticky top-0 z-50 shadow-lg">
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
-          {/* Logo & Identity */}
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded bg-gradient-to-br from-amber-500 to-red-600 flex items-center justify-center font-black text-black text-sm shadow-md">
-              3D
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h1 className="text-sm md:text-base font-black tracking-wider text-stone-100 uppercase font-mono">
-                  COVALENT-RT // GAME DEV PLATFORM
-                </h1>
-                <span className="text-[10px] px-1.5 py-0.5 bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 rounded font-mono font-bold">
-                  v3.0 BARE-METAL
-                </span>
+      {/* Top Navigation & Mode Switcher Bar with Discrete Signal Receptor */}
+      <HeaderSignalReceptor officiator={officiator} onStateChange={handleStateChange}>
+        <header className="border-b border-stone-800 bg-stone-900/95 backdrop-blur-md px-4 py-2.5 sticky top-0 z-50 shadow-lg cursor-pointer">
+          <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+            {/* Logo & Identity (Primary Signal Tap Target) */}
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded bg-gradient-to-br from-amber-500 to-red-600 flex items-center justify-center font-black text-black text-sm shadow-md">
+                3D
               </div>
-              <p className="text-xs text-stone-400 font-mono">
-                Pure Ray-Tracing 3D Engine • AI Coplay • WYSIWYG Dev Studio
-              </p>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h1 className="text-sm md:text-base font-black tracking-wider text-stone-100 uppercase font-mono">
+                    COVALENT-RT // GAME DEV PLATFORM
+                  </h1>
+                  <span className="text-[10px] px-1.5 py-0.5 bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 rounded font-mono font-bold">
+                    v3.0 BARE-METAL
+                  </span>
+                </div>
+                <p className="text-xs text-stone-400 font-mono">
+                  Pure Ray-Tracing 3D Engine • AI Coplay • WYSIWYG Dev Studio
+                </p>
+              </div>
+            </div>
+
+            {/* 3 Core Workflow Modes Switcher */}
+            <nav className="flex items-center bg-stone-950 p-1 rounded-lg border border-stone-800 font-mono text-xs cursor-default">
+              <button
+                onClick={() => setCurrentMode('GAME')}
+                className={`px-3 py-1.5 rounded-md font-bold transition-all flex items-center gap-1.5 ${
+                  currentMode === 'GAME'
+                    ? 'bg-amber-500 text-black shadow-md'
+                    : 'text-stone-400 hover:text-stone-200'
+                }`}
+              >
+                <Gamepad2 className="w-4 h-4" />
+                <span>FULL SCREEN GAME</span>
+              </button>
+
+              <button
+                onClick={() => setCurrentMode('STUDIO')}
+                className={`px-3 py-1.5 rounded-md font-bold transition-all flex items-center gap-1.5 ${
+                  currentMode === 'STUDIO'
+                    ? 'bg-cyan-500 text-black shadow-md'
+                    : 'text-stone-400 hover:text-stone-200'
+                }`}
+              >
+                <Wrench className="w-4 h-4" />
+                <span>GAME DEV STUDIO</span>
+              </button>
+
+              <button
+                onClick={() => setCurrentMode('DATA')}
+                className={`px-3 py-1.5 rounded-md font-bold transition-all flex items-center gap-1.5 ${
+                  currentMode === 'DATA'
+                    ? 'bg-emerald-500 text-black shadow-md'
+                    : 'text-stone-400 hover:text-stone-200'
+                }`}
+              >
+                <Database className="w-4 h-4" />
+                <span>DATA &amp; STATUS</span>
+              </button>
+            </nav>
+
+            {/* Mathematical Invariants Badges */}
+            <div className="hidden lg:flex items-center gap-2 font-mono text-xs cursor-default">
+              <div className="flex items-center gap-1.5 px-2 py-1 bg-stone-950 border border-stone-800 rounded text-stone-300">
+                <Binary className="w-3.5 h-3.5 text-cyan-400" />
+                <span>Q16.16</span>
+              </div>
+
+              <div className="flex items-center gap-1.5 px-2 py-1 bg-stone-950 border border-stone-800 rounded text-stone-300">
+                <Activity className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Lyapunov $1\equiv 1$</span>
+              </div>
+
+              {/* Discrete Sovereign Status Badge */}
+              <HeaderSovereignStatusBadge
+                officiator={officiator}
+                onToggle={() => {
+                  if (officiator.tomUnlocked) {
+                    officiator.resetTomHandshake();
+                    handleStateChange();
+                  } else {
+                    officiator.forceUnlockTom();
+                    handleStateChange();
+                  }
+                }}
+              />
             </div>
           </div>
-
-          {/* 3 Core Workflow Modes Switcher */}
-          <nav className="flex items-center bg-stone-950 p-1 rounded-lg border border-stone-800 font-mono text-xs">
-            <button
-              onClick={() => setCurrentMode('GAME')}
-              className={`px-3 py-1.5 rounded-md font-bold transition-all flex items-center gap-1.5 ${
-                currentMode === 'GAME'
-                  ? 'bg-amber-500 text-black shadow-md'
-                  : 'text-stone-400 hover:text-stone-200'
-              }`}
-            >
-              <Gamepad2 className="w-4 h-4" />
-              <span>FULL SCREEN GAME</span>
-            </button>
-
-            <button
-              onClick={() => setCurrentMode('STUDIO')}
-              className={`px-3 py-1.5 rounded-md font-bold transition-all flex items-center gap-1.5 ${
-                currentMode === 'STUDIO'
-                  ? 'bg-cyan-500 text-black shadow-md'
-                  : 'text-stone-400 hover:text-stone-200'
-              }`}
-            >
-              <Wrench className="w-4 h-4" />
-              <span>GAME DEV STUDIO</span>
-            </button>
-
-            <button
-              onClick={() => setCurrentMode('DATA')}
-              className={`px-3 py-1.5 rounded-md font-bold transition-all flex items-center gap-1.5 ${
-                currentMode === 'DATA'
-                  ? 'bg-emerald-500 text-black shadow-md'
-                  : 'text-stone-400 hover:text-stone-200'
-              }`}
-            >
-              <Database className="w-4 h-4" />
-              <span>DATA &amp; STATUS</span>
-            </button>
-          </nav>
-
-          {/* Mathematical Invariants Badges */}
-          <div className="hidden lg:flex items-center gap-2 font-mono text-xs">
-            <div className="flex items-center gap-1.5 px-2 py-1 bg-stone-950 border border-stone-800 rounded text-stone-300">
-              <Binary className="w-3.5 h-3.5 text-cyan-400" />
-              <span>Q16.16</span>
-            </div>
-
-            <div className="flex items-center gap-1.5 px-2 py-1 bg-stone-950 border border-stone-800 rounded text-stone-300">
-              <Activity className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Lyapunov $1\equiv 1$</span>
-            </div>
-
-            <div className="flex items-center gap-1.5 px-2 py-1 bg-cyan-950/60 border border-cyan-800/80 rounded text-cyan-300">
-              <Zap className="w-3.5 h-3.5 text-cyan-400" />
-              <span>Be &lt;&gt; Wingman</span>
-            </div>
-          </div>
-        </div>
-      </header>
+        </header>
+      </HeaderSignalReceptor>
 
       {/* Main Mode Viewport Switcher */}
       <main className="max-w-7xl mx-auto w-full p-4 md:p-6 flex-1 flex flex-col gap-6">
@@ -277,6 +290,18 @@ export default function App() {
                 </button>
 
                 <button
+                  onClick={() => setStudioTab('KERNEL_ISO')}
+                  className={`px-3 py-1.5 rounded-lg font-bold transition-colors flex items-center gap-1.5 ${
+                    studioTab === 'KERNEL_ISO'
+                      ? 'bg-fuchsia-500/25 text-fuchsia-300 border border-fuchsia-400 shadow-[0_0_12px_rgba(217,70,239,0.3)]'
+                      : 'bg-stone-950 text-stone-400 border border-stone-800 hover:text-stone-200'
+                  }`}
+                >
+                  <HardDrive className="w-3.5 h-3.5 text-fuchsia-400" />
+                  <span>Kernel Main &amp; ISO Linker (0xAE/0xAF)</span>
+                </button>
+
+                <button
                   onClick={() => setStudioTab('LEVEL_GEN')}
                   className={`px-3 py-1.5 rounded-lg font-bold transition-colors flex items-center gap-1.5 ${
                     studioTab === 'LEVEL_GEN'
@@ -352,6 +377,14 @@ export default function App() {
                     engine={engine}
                     officiator={officiator}
                     onMapMutated={() => handleMapChange(engine.map)}
+                    onSwitchToGame={() => setCurrentMode('GAME')}
+                  />
+                )}
+
+                {studioTab === 'KERNEL_ISO' && (
+                  <KernelBootIsoPanel
+                    engine={engine}
+                    officiator={officiator}
                     onSwitchToGame={() => setCurrentMode('GAME')}
                   />
                 )}
@@ -436,11 +469,35 @@ export default function App() {
               onMapLoaded={handleMapChange}
             />
 
-            {/* Lyapunov Dissipation Monitor & T-O-M Cryptographic Handshake */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Lyapunov Dissipation Monitor & Sovereign Node Telemetry */}
+            <div className="flex flex-col gap-4">
               <LyapunovMonitor telemetry={telemetry} />
-              <TomHandshake officiator={officiator} onStateChange={handleStateChange} />
+
+              {officiator.tomUnlocked && (
+                <div className="bg-emerald-950/30 border border-emerald-500/40 rounded-lg p-3 text-xs font-mono text-emerald-200 flex items-center justify-between shadow">
+                  <div className="flex items-center gap-2">
+                    <Shield className="w-4 h-4 text-emerald-400" />
+                    <span className="font-bold">SOVEREIGN PEER NODE ACTIVE &bull; Autonomous Co-Play Engaged ($1 \equiv 1$)</span>
+                  </div>
+                  <button
+                    onClick={() => {
+                      officiator.resetTomHandshake();
+                      handleStateChange();
+                    }}
+                    className="px-2.5 py-1 bg-stone-900 hover:bg-stone-800 border border-stone-700 rounded text-stone-300 text-[11px] font-bold transition-colors"
+                  >
+                    Lock Node
+                  </button>
+                </div>
+              )}
             </div>
+
+            {/* Organelles 0xAE & 0xAF: Ring 0 Kernel Main & ISO Linker */}
+            <KernelBootIsoPanel
+              engine={engine}
+              officiator={officiator}
+              onSwitchToGame={() => setCurrentMode('GAME')}
+            />
 
             {/* Bare-Metal C Organelle Source Viewer */}
             <COrganelleViewer />
