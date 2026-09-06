@@ -1,0 +1,8 @@
+{
+  "name": "Remix Covalent-RT: Ray-Traced DOOM Engine",
+  "description": "Full-scale 3D game dev platform with live ray-traced game, AI tester, AI asset generator, AI level layout generator, AI coplay, WYSIWYG editor, import/export, and 3 workflow modes.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
